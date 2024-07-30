@@ -12,32 +12,45 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-
-
     b.installArtifact(lib);
 
+
+    // Create exe
     const exe = b.addExecutable(.{
         .name = "amx",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
-
     b.installArtifact(exe);
 
+
+    // Link to GLFW and Glad
+    exe.addIncludePath(b.path("libs/includes/"));
+    exe.addIncludePath(b.path("libs/includes/glad/"));
+    exe.addIncludePath(b.path("libs/includes/GLFW/"));
+    exe.addLibraryPath(b.path("libs/"));
+    exe.linkLibC();
+    exe.addCSourceFile(.{
+        .file = b.path("libs/glad.c"),
+    });
+    exe.linkSystemLibrary("opengl32");
+    exe.linkSystemLibrary("winmm");
+    exe.linkSystemLibrary("gdi32");
+    exe.linkSystemLibrary("glfw3");
+
+
+    // Run command
     const run_cmd = b.addRunArtifact(exe);
-
-
     run_cmd.step.dependOn(b.getInstallStep());
-
     if (b.args) |args| {
         run_cmd.addArgs(args);
     }
-
-
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
 
+
+    // Tests
     const lib_unit_tests = b.addTest(.{
         .root_source_file = b.path("src/amx.zig"),
         .target = target,
