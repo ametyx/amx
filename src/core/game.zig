@@ -21,6 +21,11 @@ pub const Game = struct {
             try self.Window.onFrameEnd();
         }
     }
+
+    /// Dispose of the game and clears up memory
+    pub fn dispose(self: *Game) void {
+        self.Window.dispose();
+    }
 };
 
 /// Create a game structure that holds the data for the game

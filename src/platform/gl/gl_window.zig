@@ -9,7 +9,8 @@ pub const GLWindow = struct {
         .initFn = init,
         .shouldCloseFn = shouldClose,
         .onFrameStartFn = onFrameStart,
-        .onFrameEndFn = onFrameEnd
+        .onFrameEndFn = onFrameEnd,
+        .disposeFn = dispose
     },
     handle: ?*glfw.GLFWwindow,
 
@@ -44,5 +45,14 @@ pub const GLWindow = struct {
         const w: *GLWindow = @ptrCast(@alignCast(self));
         glfw.glfwSwapBuffers(w.handle);
         glfw.glfwPollEvents();
+    }
+
+    fn dispose(self: *Window) void {
+        const w: *GLWindow = @ptrCast(@alignCast(self));
+        if (w.handle != null) {
+            glfw.glfwDestroyWindow(w.handle);
+        }
+        
+        glfw.glfwTerminate();
     }
 };
