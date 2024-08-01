@@ -14,6 +14,8 @@ pub fn build(b: *std.Build) void {
     });
     b.installArtifact(lib);
 
+    const options = b.addOptions();
+    options.addOption(bool, "target_gl", b.option(bool, "target_gl", "Opengl Target platform") orelse false);
 
     // Create exe
     const exe = b.addExecutable(.{

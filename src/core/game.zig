@@ -1,6 +1,6 @@
 const std = @import("std");
 const Window = @import("../platform/window.zig").Window;
-const GLPlatform = @import("../platform/gl/gl_platform.zig").GLPlatform;
+const AppErrors = @import("errors.zig").AppErrors;
 
 pub const Game = struct {
     /// Title of the game
@@ -34,6 +34,7 @@ pub fn createGame(alloc: std.mem.Allocator, title: []const u8) !*Game {
     g.Title = title;
 
     // Create GL window
+    const GLPlatform = @import("../platform/gl/gl_platform.zig").GLPlatform;
     const gl = GLPlatform{};
     const platform = gl.platform;
     g.Window = try platform.createWindow(alloc, title);

@@ -3,7 +3,7 @@ OUTDIR = zig-out
 TARGET = amx
 
 all:
-	@zig build
+	@zig build -Dtarget_gl=true
 
 run:
 	@zig build run
