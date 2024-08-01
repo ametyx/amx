@@ -24,8 +24,7 @@ pub fn build(b: *std.Build) void {
     });
     b.installArtifact(exe);
 
-
-    // Link to GLFW and Glad
+    // Link to GLFW and Glad NEED TO BE CHANGED
     exe.addIncludePath(b.path("libs/includes/"));
     exe.addIncludePath(b.path("libs/includes/glad/"));
     exe.addIncludePath(b.path("libs/includes/GLFW/"));
