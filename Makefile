@@ -1,20 +1,20 @@
-CACHEDIR = .zig-cache
-OUTDIR = zig-out
-TARGET = amx
+.PHONY: amx all clean
 
-all:
-	@zig build -Dtarget_gl=true
+amx:
+	@$(MAKE) -C framework build
+
+sandbox:
+	@$(MAKE) -C sandbox build
+
+all: amx sandbox
 
 run:
-	@zig build run
-
-test:
-	@zig build test
-
-.PHONY: clean
+	@$(MAKE) -C sandbox run
 
 clean:
-	@rmdir /s /q $(OUTDIR)
+	@$(MAKE) -C framework clean
+	@$(MAKE) -C sandbox clean
 
 clear: clean
-	@rmdir /s /q $(CACHEDIR)
+	@$(MAKE) -C framework clear
+	@$(MAKE) -C sandbox clear
